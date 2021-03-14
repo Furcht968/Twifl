@@ -1,25 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:twifl/apiData.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
 
-class Tweet extends StatelessWidget {
+class TweetScr extends StatelessWidget {
 
   TextEditingController _fieldController = TextEditingController();
   bool _isEnabled = false;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Tweet"), actions: [
-        RaisedButton(
-          child: const Text('Tweet'),
-          color: Colors.blue,
-          textColor: Colors.white,
-          shape: const StadiumBorder(),
-          onPressed: !_isEnabled==false ? null : () {},
+        Container(
+          padding: EdgeInsets.all(8),
+          child: RaisedButton(
+            child: const Text('Tweet'),
+            color: Colors.blue,
+            textColor: Colors.white,
+            shape: const StadiumBorder(),
+            onPressed: _isEnabled ? null : () async{
+              apiData data = apiData();
+              final twitterApi = TwitterApi(
+                client: TwitterClient(
+                  consumerKey: data.KEY,
+                  consumerSecret: data.SECRET,
+                  token: data.ACT,
+                  secret: data.ATS,
+                ),
+              );
+              await twitterApi.tweetService.update(
+                status: _fieldController.text,
+              );
+              Navigator.pop(context);
+            },
+          )
         )
       ]),
       body: Column(
         children: [
           Expanded(
             child: Container(
+              padding: EdgeInsets.all(8),
               child: TextField(
                 autofocus: true,
                 maxLines: null,
@@ -52,19 +73,19 @@ class Tweet extends StatelessWidget {
                 // GIF追加
                 IconButton(
                   icon: Icon(Icons.gif_outlined),
-                  tooltip: 'Picture',
+                  tooltip: 'GIF',
                   onPressed: () {},
                 ),
                 // 投票追加
                 IconButton(
                   icon: Icon(Icons.add_chart),
-                  tooltip: 'Picture',
+                  tooltip: 'Tohyo',
                   onPressed: () {},
                 ),
                 // 位置情報追加
                 IconButton(
                   icon: Icon(Icons.add_location_alt_outlined),
-                  tooltip: 'Picture',
+                  tooltip: 'Location',
                   onPressed: () {},
                 ),
 
