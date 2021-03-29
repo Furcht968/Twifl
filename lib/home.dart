@@ -69,6 +69,7 @@ class _Home extends State<Home> {
             child: Wrap(
               children: [
                 Container(
+                  padding: EdgeInsets.all(10),
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
@@ -111,6 +112,7 @@ class _Home extends State<Home> {
     apiData data = apiData();
     List tweets = [];
     List<Widget> tweets_wd;
+    await loginApi();
     final twitterApi = TwitterApi(
       client: TwitterClient(
         consumerKey: data.KEY,

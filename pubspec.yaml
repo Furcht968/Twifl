@@ -23,6 +23,8 @@ environment:
 dependencies:
   dart_twitter_api: ^0.5.1
   html_character_entities: ^1.0.0+1
+  url_launcher: ^6.0.2
+  oauth2: ^2.0.0
   flutter:
     sdk: flutter
 
