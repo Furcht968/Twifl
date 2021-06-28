@@ -39,8 +39,8 @@ class _Home extends State<Home> {
     List<Widget> cvData = [];
     num mojisu = 27;
     num umojisu = 0;
-    String name;
     User? user;
+    String name;
     String? tweet;
     for(int i=0; i<lsdata.length; i++){
       bool result = new RegExp(r"^RT @.*:").hasMatch(lsdata[i]["text"]);
@@ -52,31 +52,31 @@ class _Home extends State<Home> {
         user = lsdata[i]["tweet"].user;
         tweet = lsdata[i]["tweet"].fullText;
       }
-      if((user?.name ?? "Null").length >= mojisu){
-        name = (user?.name ?? "Null").substring(0,mojisu.toInt())+"...";
-      }else{
-        name = (user?.name ?? "Null");
+      name = user?.name ?? "Null";
+      if(name.length >= mojisu){
+        name = name.substring(0,mojisu.toInt())+"...";
       }
-      String? icon = user?.profileImageUrlHttps;
-      String? scrName = user?.screenName;
+      String icon = user?.profileImageUrlHttps ?? "Null";
+      String scrName = user?.screenName ?? "Null";
       if(lsdata[i]["text"]!=null){
         cvData.add(
           Container(
             padding: EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))
+              border: Border(bottom: BorderSide(width: 0.5, color: Colors.grey))
             ),
             child: Wrap(
               children: [
                 Container(
                   padding: EdgeInsets.all(10),
-                  width: 40,
-                  height: 40,
+                  margin: EdgeInsets.all(3),
+                  width: 45,
+                  height: 45,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: NetworkImage(icon ?? "Null"),
+                      image: NetworkImage(icon),
                     ),
                   ),
                 ),
@@ -84,20 +84,22 @@ class _Home extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user?.name ?? "Null",
-                      style: TextStyle(
+                        name,
+                        style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                       overflow: TextOverflow.ellipsis,
-                    ),
+                    ),/*
                     Text(
-                      "@"+(scrName ?? "Null"),
+                      "@"+scrName,
                       style: TextStyle(
                         color: Color(0xff777777),
                       ),
                       overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(HtmlCharacterEntities.decode(tweet ?? "Null"))
+                    ),*/
+                    Container(
+                       child: Text(HtmlCharacterEntities.decode(tweet ?? "Null"))
+                    )
                   ]
                 ),
               ]
@@ -112,7 +114,6 @@ class _Home extends State<Home> {
     apiData data = apiData();
     List tweets = [];
     List<Widget> tweets_wd;
-    await loginApi();
     final twitterApi = TwitterApi(
       client: TwitterClient(
         consumerKey: data.KEY,
